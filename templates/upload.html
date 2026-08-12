@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Upload Image - HELMGUARD</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+    <nav>
+
+        <div class="logo">
+            🪖 HELMGUARD
+        </div>
+
+        <ul>
+
+            <li>
+                <a href="/">Home</a>
+            </li>
+
+            <li>
+                <a href="/upload">Upload</a>
+            </li>
+
+            <li>
+                <a href="/dashboard">Dashboard</a>
+            </li>
+
+            <li>
+                <a href="/history">History</a>
+            </li>
+
+        </ul>
+
+    </nav>
+
+
+    <section class="hero">
+
+        <h1>Upload Traffic Image</h1>
+
+        <p>
+            Upload an image to analyze helmet usage.
+        </p>
+
+
+        <form action="/upload" method="POST" enctype="multipart/form-data">
+
+            <label for="image" class="file-label">
+                📁 Choose Traffic Image
+            </label>
+
+            <input type="file" id="image" name="image" accept="image/*" required>
+
+            <p id="file-name">No image selected</p>
+
+            <button type="submit" class="btn">
+                Upload Image
+            </button>
+
+        </form>
+
+    </section>
+
+
+    <footer>
+
+        <p>
+            © 2026 HELMGUARD | MCA Mini Project
+        </p>
+
+    </footer>
+
+</body>
+
+</html>

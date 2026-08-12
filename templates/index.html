@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HELMGUARD</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <div class="logo">🪖 HELMGUARD</div>
+
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/upload">Upload</a></li>
+            <li><a href="/dashboard">Dashboard</a></li>
+            <li><a href="/history">History</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+
+        <h1>AI-Based Helmet Detection & Smart Traffic Monitoring System</h1>
+
+        <p>
+            Detect helmet violations, recognize vehicle number plates,
+            record date, time and location, trigger alarms,
+            send email alerts and manage all records from one dashboard.
+        </p>
+
+        <div class="buttons">
+            <a href="/upload" class="btn">Upload Image</a>
+            <a href="/dashboard" class="btn">Open Dashboard</a>
+        </div>
+
+    </section>
+
+    <!-- Features -->
+    <section class="features">
+
+        <div class="card">
+            <h2>🪖 Helmet Detection</h2>
+            <p>Detects riders wearing and not wearing helmets using YOLOv8.</p>
+        </div>
+
+        <div class="card">
+            <h2>🚗 Number Plate</h2>
+            <p>Recognizes vehicle registration numbers automatically.</p>
+        </div>
+
+        <div class="card">
+            <h2>🚨 Smart Alerts</h2>
+            <p>Alarm and email notification for helmet violations.</p>
+        </div>
+
+        <div class="card">
+            <h2>📊 Dashboard</h2>
+            <p>View reports, graphs and violation history.</p>
+        </div>
+
+    </section>
+
+    <!-- Footer -->
+    <footer>
+
+        <p>© 2026 HELMGUARD | MCA Mini Project</p>
+
+    </footer>
+
+</body>
+
+</html>
