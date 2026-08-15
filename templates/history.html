@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>History - HELMGUARD</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+        .history-container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 50px auto;
+        }
+
+        .history-title {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .history-title h1 {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .history-title p {
+            color: #d1d5db;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            background: #1f2937;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #111827;
+            color: #00d4ff;
+            padding: 15px;
+            text-align: center;
+        }
+
+        td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #374151;
+        }
+
+        tr:hover {
+            background: #273449;
+        }
+
+        .violation {
+            color: #ff4d4d;
+            font-weight: bold;
+        }
+
+        .confidence {
+            color: #00ff88;
+            font-weight: bold;
+        }
+
+        .no-records {
+            text-align: center;
+            padding: 40px;
+            color: #d1d5db;
+        }
+
+        .violation-image {
+            width: 120px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+    <!-- =========================
+         NAVIGATION
+    ========================== -->
+
+    <nav>
+
+        <div class="logo">
+
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="HELMGUARD Logo">
+
+        </div>
+
+
+        <ul>
+
+            <li>
+                <a href="/">Home</a>
+            </li>
+
+            <li>
+                <a href="/upload">Upload</a>
+            </li>
+
+            <li>
+                <a href="/dashboard">Dashboard</a>
+            </li>
+
+            <li>
+                <a href="/history">History</a>
+            </li>
+
+        </ul>
+
+    </nav>
+
+
+    <!-- =========================
+         HISTORY
+    ========================== -->
+
+    <div class="history-container">
+
+        <div class="history-title">
+
+            <h1>
+                Violation History
+            </h1>
+
+            <p>
+                Previously detected helmet violations
+            </p>
+
+        </div>
+
+
+        <div class="table-container">
+
+            {% if violations %}
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>ID</th>
+
+                        <th>Image</th>
+
+                        <th>Date</th>
+
+                        <th>Time</th>
+
+                        <th>Location</th>
+
+                        <th>Detection</th>
+
+                        <th>Confidence</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for violation in violations %}
+
+                    <tr>
+
+                        <td>
+                            {{ violation["id"] }}
+                        </td>
+
+
+                        <td>
+
+                            <img src="{{ url_for(
+                                    'results',
+                                    filename=violation['image']
+                                ) }}" class="violation-image" alt="Violation Image">
+
+                        </td>
+
+
+                        <td>
+                            {{ violation["date"] }}
+                        </td>
+
+
+                        <td>
+                            {{ violation["time"] }}
+                        </td>
+
+
+                        <td>
+                            {{ violation["location"] }}
+                        </td>
+
+
+                        <td class="violation">
+                            {{ violation["detection_type"] }}
+                        </td>
+
+
+                        <td class="confidence">
+                            {{ violation["confidence"] }}%
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+            {% else %}
+
+            <div class="no-records">
+
+                <h2>
+                    No violations recorded yet.
+                </h2>
+
+                <p>
+                    Upload a traffic image to start recording violations.
+                </p>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+
+    <footer>
+
+        <p>
+            © 2026 HELMGUARD | MCA Mini Project
+        </p>
+
+    </footer>
+
+</body>
+
+</html>

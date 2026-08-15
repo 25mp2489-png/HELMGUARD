@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard - HELMGUARD</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+        .dashboard-container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 45px auto;
+        }
+
+        .dashboard-title {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .dashboard-title h1 {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .dashboard-title p {
+            color: #d1d5db;
+        }
+
+        /* =========================
+           STAT CARDS
+        ========================== */
+
+        .stats {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fit,
+                    minmax(220px, 1fr));
+
+            gap: 25px;
+
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+
+            background: #1f2937;
+
+            padding: 30px;
+
+            border-radius: 12px;
+
+            text-align: center;
+
+        }
+
+        .stat-card h2 {
+
+            font-size: 18px;
+
+            margin-bottom: 15px;
+
+            color: #d1d5db;
+
+        }
+
+        .stat-number {
+
+            font-size: 42px;
+
+            font-weight: bold;
+
+        }
+
+        .helmet-number {
+
+            color: #00ff88;
+
+        }
+
+        .nohelmet-number {
+
+            color: #ff4444;
+
+        }
+
+        .total-number {
+
+            color: #00d4ff;
+
+        }
+
+        /* =========================
+           GRAPH
+        ========================== */
+
+        .chart-card {
+
+            background: #1f2937;
+
+            border-radius: 12px;
+
+            padding: 30px;
+
+            margin-bottom: 35px;
+
+        }
+
+        .chart-card h2 {
+
+            text-align: center;
+
+            margin-bottom: 30px;
+
+        }
+
+        .chart {
+
+            display: flex;
+
+            align-items: flex-end;
+
+            justify-content: space-around;
+
+            height: 350px;
+
+            border-bottom: 2px solid #6b7280;
+
+            padding: 20px;
+
+            gap: 20px;
+
+        }
+
+        .day {
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            justify-content: flex-end;
+
+            height: 100%;
+
+            flex: 1;
+
+        }
+
+        .bars {
+
+            height: 260px;
+
+            display: flex;
+
+            align-items: flex-end;
+
+            gap: 8px;
+
+        }
+
+        .bar {
+
+            width: 25px;
+
+            min-height: 3px;
+
+            border-radius: 5px 5px 0 0;
+
+            transition: 0.3s;
+
+        }
+
+        .bar:hover {
+
+            opacity: 0.75;
+
+        }
+
+        .helmet-bar {
+
+            background: #00ff88;
+
+        }
+
+        .nohelmet-bar {
+
+            background: #ff4444;
+
+        }
+
+        .day-label {
+
+            margin-top: 12px;
+
+            font-weight: bold;
+
+        }
+
+        .day-date {
+
+            font-size: 12px;
+
+            color: #9ca3af;
+
+            margin-top: 4px;
+
+        }
+
+        /* =========================
+           LEGEND
+        ========================== */
+
+        .legend {
+
+            display: flex;
+
+            justify-content: center;
+
+            gap: 35px;
+
+            margin-top: 25px;
+
+        }
+
+        .legend-item {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+        }
+
+        .legend-box {
+
+            width: 18px;
+
+            height: 18px;
+
+            border-radius: 4px;
+
+        }
+
+        .helmet-box {
+
+            background: #00ff88;
+
+        }
+
+        .nohelmet-box {
+
+            background: #ff4444;
+
+        }
+
+        /* =========================
+           INFO
+        ========================== */
+
+        .info-card {
+
+            background: #1f2937;
+
+            padding: 25px;
+
+            border-radius: 12px;
+
+            text-align: center;
+
+        }
+
+        .info-card p {
+
+            color: #d1d5db;
+
+            line-height: 1.7;
+
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+    <!-- =========================
+         NAVIGATION
+    ========================== -->
+
+    <nav>
+
+        <div class="logo">
+
+            <img src="{{ url_for(
+                    'static',
+                    filename='images/logo.png'
+                ) }}" alt="HELMGUARD Logo">
+
+        </div>
+
+
+        <ul>
+
+            <li>
+                <a href="/">Home</a>
+            </li>
+
+            <li>
+                <a href="/upload">Upload</a>
+            </li>
+
+            <li>
+                <a href="/dashboard">
+                    Dashboard
+                </a>
+            </li>
+
+            <li>
+                <a href="/history">
+                    History
+                </a>
+            </li>
+
+        </ul>
+
+    </nav>
+
+
+    <!-- =========================
+         DASHBOARD
+    ========================== -->
+
+    <div class="dashboard-container">
+
+        <div class="dashboard-title">
+
+            <h1>
+                HELMGUARD Dashboard
+            </h1>
+
+            <p>
+                Helmet detection statistics and analysis
+            </p>
+
+        </div>
+
+
+        <!-- =========================
+             STATISTICS
+        ========================== -->
+
+        <div class="stats">
+
+
+            <div class="stat-card">
+
+                <h2>
+                    Total Helmet
+                </h2>
+
+                <div class="stat-number helmet-number">
+
+                    {{ total_helmet }}
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <h2>
+                    Total No-Helmet
+                </h2>
+
+                <div class="stat-number nohelmet-number">
+
+                    {{ total_nohelmet }}
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <h2>
+                    Total Detections
+                </h2>
+
+                <div class="stat-number total-number">
+
+                    {{ total_detections }}
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             WEEKLY GRAPH
+        ========================== -->
+
+        <div class="chart-card">
+
+            <h2>
+                Weekly Helmet Detection Statistics
+            </h2>
+
+
+            <div class="chart">
+
+                {% for day in weekly_data %}
+
+                <div class="day">
+
+                    <div class="bars">
+
+                        <!-- Helmet -->
+
+                        <div class="bar helmet-bar" style="
+                                height:
+                                {{ day.helmet * 40 + 3 }}px;
+                            " title="Helmet: {{ day.helmet }}">
+                        </div>
+
+
+                        <!-- No Helmet -->
+
+                        <div class="bar nohelmet-bar" style="
+                                height:
+                                {{ day.nohelmet * 40 + 3 }}px;
+                            " title="No-Helmet: {{ day.nohelmet }}">
+                        </div>
+
+                    </div>
+
+
+                    <div class="day-label">
+
+                        {{ day.day }}
+
+                    </div>
+
+
+                    <div class="day-date">
+
+                        {{ day.date }}
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+
+            <!-- LEGEND -->
+
+            <div class="legend">
+
+                <div class="legend-item">
+
+                    <div class="legend-box helmet-box">
+                    </div>
+
+                    <span>
+                        Helmet
+                    </span>
+
+                </div>
+
+
+                <div class="legend-item">
+
+                    <div class="legend-box nohelmet-box">
+                    </div>
+
+                    <span>
+                        No-Helmet
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             INFORMATION
+        ========================== -->
+
+        <div class="info-card">
+
+            <h2>
+                Weekly Report
+            </h2>
+
+            <br>
+
+            <p>
+                This dashboard displays helmet and
+                no-helmet detections recorded during
+                the last seven days.
+            </p>
+
+            <p>
+                No-Helmet detections are automatically
+                stored as traffic violations in the
+                HELMGUARD database.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+
+    <footer>
+
+        <p>
+            © 2026 HELMGUARD | MCA Mini Project
+        </p>
+
+    </footer>
+
+</body>
+
+</html>
