@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>HELMGUARD Detection Result</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #111;
+            color: white;
+            text-align: center;
+            padding: 40px;
+        }
+
+        h1 {
+            color: #ff3333;
+        }
+
+        .result-box {
+            background: #222;
+            padding: 25px;
+            margin: 20px auto;
+            max-width: 700px;
+            border-radius: 12px;
+        }
+
+        .helmet {
+            color: #00ff88;
+        }
+
+        .nohelmet {
+            color: #ff3333;
+        }
+
+        .detection {
+            font-size: 20px;
+            margin: 10px;
+        }
+
+        img,
+        video {
+            max-width: 90%;
+            max-height: 500px;
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 25px;
+            padding: 12px 25px;
+            background: #ff3333;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>🛡️ HELMGUARD</h1>
+
+    <div class="result-box">
+
+        <h2>Detection Result</h2>
+
+        <p>File: {{ filename }}</p>
+
+        {% if detections %}
+
+        {% for detection in detections %}
+
+        {% if detection.class == "No-Helmet" %}
+
+        <div class="detection nohelmet">
+            ⚠️ No-Helmet — {{ detection.confidence }}%
+        </div>
+
+        {% elif detection.class == "Helmet" %}
+
+        <div class="detection helmet">
+            🪖 Helmet — {{ detection.confidence }}%
+        </div>
+
+        {% else %}
+
+        <div class="detection">
+            👤 {{ detection.class }} — {{ detection.confidence }}%
+        </div>
+
+        {% endif %}
+
+        {% endfor %}
+
+        {% else %}
+
+        <p>No objects detected.</p>
+
+        {% endif %}
+
+
+        {% if result_file %}
+
+        {% if result_file.endswith('.jpg') or
+        result_file.endswith('.jpeg') or
+        result_file.endswith('.png') %}
+
+        <img src="{{ url_for('results', filename=result_file) }}">
+
+        {% elif result_file.endswith('.mp4') or
+        result_file.endswith('.avi') or
+        result_file.endswith('.webm') %}
+
+        <video controls>
+            <source src="{{ url_for('results', filename=result_file) }}">
+            Your browser does not support video playback.
+        </video>
+
+        {% endif %}
+
+        {% endif %}
+
+        <br>
+
+        <a href="/upload">Upload Another File</a>
+
+    </div>
+
+</body>
+
+</html>

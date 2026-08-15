@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# YOLO / ML files
+best.pt
+yolov8n.pt
+dataset/
+runs/
+
+# Uploaded/test media
+uploads/
+test_images/
+test_video/
+
+# Python cache
+.pytest_cache/
+
+# Environment files
+.env

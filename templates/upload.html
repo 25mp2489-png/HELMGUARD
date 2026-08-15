@@ -7,7 +7,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Upload Image - HELMGUARD</title>
+    <title>Upload - HELMGUARD</title>
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
@@ -15,6 +15,7 @@
 
 <body>
 
+    <!-- Navigation -->
     <nav>
 
         <div class="logo">
@@ -44,27 +45,34 @@
     </nav>
 
 
+    <!-- Upload Section -->
     <section class="hero">
 
-        <h1>Upload Traffic Image</h1>
+        <h1>Upload Traffic Image or Video</h1>
 
         <p>
-            Upload an image to analyze helmet usage.
+            Upload an image or video to detect helmet and
+            no-helmet riders.
         </p>
 
 
         <form action="/upload" method="POST" enctype="multipart/form-data">
 
+            <!-- File selection -->
             <label for="image" class="file-label">
-                📁 Choose Traffic Image
+                📁 Choose Image or Video
             </label>
 
-            <input type="file" id="image" name="image" accept="image/*" required>
+            <input type="file" id="image" name="image" accept="image/*,video/*" required>
 
-            <p id="file-name">No image selected</p>
+            <!-- Selected file name -->
+            <p id="file-name">
+                No image or video selected
+            </p>
 
+            <!-- Submit -->
             <button type="submit" class="btn">
-                Upload Image
+                🔍 Detect Helmet
             </button>
 
         </form>
@@ -72,6 +80,7 @@
     </section>
 
 
+    <!-- Footer -->
     <footer>
 
         <p>
@@ -79,6 +88,31 @@
         </p>
 
     </footer>
+
+
+    <!-- Display selected file name -->
+    <script>
+
+        const imageInput = document.getElementById("image");
+        const fileName = document.getElementById("file-name");
+
+        imageInput.addEventListener("change", function () {
+
+            if (this.files.length > 0) {
+
+                fileName.textContent =
+                    "Selected: " + this.files[0].name;
+
+            } else {
+
+                fileName.textContent =
+                    "No image or video selected";
+
+            }
+
+        });
+
+    </script>
 
 </body>
 
