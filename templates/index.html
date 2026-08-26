@@ -2,74 +2,190 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>HELMGUARD</title>
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
 </head>
 
 <body>
 
-    <!-- Navigation Bar -->
+    <!-- Navigation -->
     <nav>
-        <div class="logo">🪖 HELMGUARD</div>
+
+        <a href="/" class="logo">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="HELMGUARD Logo">
+            <span class="logo-text">HELMGUARD</span>
+        </a>
 
         <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/upload">Upload</a></li>
-            <li><a href="/dashboard">Dashboard</a></li>
-            <li><a href="/history">History</a></li>
+
+            <li>
+                <a href="/">Home</a>
+            </li>
+
+            <li>
+                <a href="/upload">Upload</a>
+            </li>
+
+            <li>
+                <a href="/dashboard">Dashboard</a>
+            </li>
+
+            <li>
+                <a href="/history">History</a>
+            </li>
+
         </ul>
+
     </nav>
 
+
     <!-- Hero Section -->
+
     <section class="hero">
 
-        <h1>AI-Based Helmet Detection & Smart Traffic Monitoring System</h1>
+        <h1>
+            AI-Based Helmet Detection &amp; Smart Traffic Monitoring System
+        </h1>
 
         <p>
             Detect helmet violations, recognize vehicle number plates,
-            record date, time and location, trigger alarms,
-            send email alerts and manage all records from one dashboard.
+            record date, time and location, trigger alarms, send email alerts and
+            <br>
+            manage all records from one dashboard.
         </p>
 
+
         <div class="buttons">
-            <a href="/upload" class="btn">Upload Image</a>
-            <a href="/dashboard" class="btn">Open Dashboard</a>
+
+            <a href="/upload" class="btn">
+                Upload Image
+            </a>
+
+            <a href="/dashboard" class="btn">
+                Open Dashboard
+            </a>
+
         </div>
 
     </section>
 
-    <!-- Features -->
+
+    <!-- Feature Cards -->
+
     <section class="features">
 
-        <div class="card">
-            <h2>🪖 Helmet Detection</h2>
-            <p>Detects riders wearing and not wearing helmets using YOLOv8.</p>
-        </div>
+
+        <!-- Helmet Detection -->
 
         <div class="card">
-            <h2>🚗 Number Plate</h2>
-            <p>Recognizes vehicle registration numbers automatically.</p>
+
+            <div class="card-heading">
+
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Helmet">
+
+                <h2>
+                    Helmet<br>
+                    Detection
+                </h2>
+
+            </div>
+
+            <p>
+                Detects riders wearing helmets using AI-powered
+                detection technology.
+            </p>
+
         </div>
 
-        <div class="card">
-            <h2>🚨 Smart Alerts</h2>
-            <p>Alarm and email notification for helmet violations.</p>
-        </div>
+
+        <!-- Number Plate -->
 
         <div class="card">
-            <h2>📊 Dashboard</h2>
-            <p>View reports, graphs and violation history.</p>
+
+            <div class="card-heading">
+
+                <span class="emoji">
+                    🚘
+                </span>
+
+                <h2>
+                    Number Plate
+                </h2>
+
+            </div>
+
+            <p>
+                Recognizes vehicle registration numbers
+                for identification.
+            </p>
+
+        </div>
+
+
+        <!-- Smart Alerts -->
+
+        <div class="card">
+
+            <div class="card-heading">
+
+                <span class="emoji">
+                    🚨
+                </span>
+
+                <h2>
+                    Smart Alerts
+                </h2>
+
+            </div>
+
+            <p>
+                Alarm and email notification for detected
+                helmet violations.
+            </p>
+
+        </div>
+
+
+        <!-- Dashboard -->
+
+        <div class="card">
+
+            <div class="card-heading">
+
+                <span class="emoji">
+                    📊
+                </span>
+
+                <h2>
+                    Dashboard
+                </h2>
+
+            </div>
+
+            <p>
+                View reports, graphs and detection statistics
+                from one dashboard.
+            </p>
+
         </div>
 
     </section>
 
+
     <!-- Footer -->
+
     <footer>
 
-        <p>© 2026 HELMGUARD | MCA Mini Project</p>
+        <p>
+            © 2026 HELMGUARD | MCA Mini Project
+        </p>
 
     </footer>
 

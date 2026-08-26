@@ -10,25 +10,57 @@ body {
     color: white;
 }
 
-/* Navigation */
+
+/* =========================
+   NAVIGATION
+========================= */
 
 nav {
+    height: 78px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 60px;
+    padding: 8px 60px;
     background: #1f2937;
 }
 
+
+/* LOGO */
+
 .logo {
-    font-size: 28px;
-    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+}
+
+.logo img {
+    height: 48px;
+    width: auto;
+    object-fit: contain;
+}
+
+.logo-text,
+.logo span {
+    font-size: 22px;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: 1.5px;
+    transition: color 0.3s;
+}
+
+.logo:hover .logo-text,
+.logo:hover span {
     color: #00d4ff;
 }
+
+
+/* NAV LINKS */
 
 nav ul {
     display: flex;
     list-style: none;
+    align-items: center;
 }
 
 nav ul li {
@@ -38,33 +70,44 @@ nav ul li {
 nav ul li a {
     color: white;
     text-decoration: none;
-    transition: .3s;
+    font-size: 16px;
+    transition: 0.3s;
 }
 
 nav ul li a:hover {
     color: #00d4ff;
 }
 
-/* Hero */
+
+/* =========================
+   HERO
+========================= */
 
 .hero {
     text-align: center;
-    padding: 80px 20px;
+    padding: 80px 20px 65px;
 }
 
 .hero h1 {
     font-size: 42px;
+    font-weight: bold;
     margin-bottom: 20px;
+    line-height: 1.2;
 }
 
 .hero p {
-    width: 70%;
+    width: 85%;
+    max-width: 1000px;
     margin: auto;
     line-height: 30px;
     color: #d1d5db;
+    font-size: 16px;
 }
 
-/* Buttons */
+
+/* =========================
+   BUTTONS
+========================= */
 
 .buttons {
     margin-top: 40px;
@@ -75,21 +118,25 @@ nav ul li a:hover {
     background: #00d4ff;
     color: black;
     text-decoration: none;
-    padding: 15px 35px;
+    padding: 15px 36px;
     border-radius: 8px;
     margin: 10px;
     font-weight: bold;
+    font-size: 16px;
 }
 
 .btn:hover {
     background: white;
 }
 
-/* Cards */
+
+/* =========================
+   FEATURE CARDS
+========================= */
 
 .features {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(4, 1fr);
     gap: 30px;
     padding: 60px;
 }
@@ -99,14 +146,112 @@ nav ul li a:hover {
     padding: 30px;
     border-radius: 12px;
     text-align: center;
+    min-height: 190px;
 }
 
-.card h2 {
-    margin-bottom: 20px;
+
+/* CARD HEADING */
+
+.card-heading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 18px;
 }
+
+
+/* HELMGUARD LOGO INSIDE FIRST CARD */
+
+.card-heading img {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+}
+
+
+/* OTHER ICONS */
+
+.emoji {
+    font-size: 30px;
+}
+
+
+/* CARD TITLE */
+
+.card h2 {
+    font-size: 25px;
+    line-height: 1.1;
+}
+
+
+/* CARD TEXT */
+
+.card p {
+    color: #d1d5db;
+    line-height: 25px;
+    font-size: 15px;
+}
+
+
+/* =========================
+   FOOTER
+========================= */
 
 footer {
     background: #1f2937;
     text-align: center;
     padding: 20px;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 900px) {
+
+    .features {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    nav {
+        flex-direction: column;
+        height: auto;
+        padding: 15px 20px;
+        gap: 10px;
+    }
+
+    .logo img {
+        height: 40px;
+        width: auto;
+    }
+
+    .logo-text,
+    .logo span {
+        font-size: 18px;
+    }
+
+    nav ul li {
+        margin-left: 12px;
+        margin-right: 12px;
+    }
+
+    .hero {
+        padding: 50px 20px;
+    }
+
+    .hero h1 {
+        font-size: 30px;
+    }
+
+    .features {
+        grid-template-columns: 1fr;
+        padding: 30px 20px;
+    }
+
 }

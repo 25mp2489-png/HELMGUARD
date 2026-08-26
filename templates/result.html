@@ -1,132 +1,402 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title>HELMGUARD Detection Result</title>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Detection Result - HELMGUARD</title>
 
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            background: #111;
+            background: #111111;
             color: white;
+            min-height: 100vh;
+        }
+
+        .header {
             text-align: center;
+            padding: 70px 20px 25px;
+        }
+
+        .header h1 {
+            color: #ff3030;
+            font-size: 34px;
+        }
+
+        .container {
+            width: 750px;
+            max-width: 90%;
+            margin: auto;
+            background: #222222;
             padding: 40px;
+            border-radius: 15px;
+            text-align: center;
         }
 
-        h1 {
-            color: #ff3333;
+        .container h2 {
+            margin-bottom: 20px;
         }
 
-        .result-box {
-            background: #222;
-            padding: 25px;
-            margin: 20px auto;
-            max-width: 700px;
-            border-radius: 12px;
+        .filename {
+            margin-bottom: 25px;
+            color: #ddd;
         }
 
-        .helmet {
-            color: #00ff88;
+        /* =========================================
+           NO HELMET ALERT
+           ========================================= */
+
+        .danger-alert {
+            background: #ff3030;
+            color: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            font-size: 22px;
+            font-weight: bold;
+            box-shadow: 0 0 20px rgba(255, 48, 48, 0.6);
+            animation: blink 1s infinite;
         }
 
-        .nohelmet {
-            color: #ff3333;
+        @keyframes blink {
+
+            0% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.65;
+            }
+
+            100% {
+                opacity: 1;
+            }
+
+        }
+
+        /* =========================================
+           SAFE ALERT
+           ========================================= */
+
+        .safe-alert {
+            background: #00a86b;
+            color: white;
+            padding: 18px;
+            margin: 20px 0;
+            border-radius: 10px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        /* =========================================
+           DETECTION DETAILS
+           ========================================= */
+
+        .detections {
+            margin-bottom: 30px;
         }
 
         .detection {
+            color: #00ff88;
             font-size: 20px;
-            margin: 10px;
+            margin: 12px;
         }
 
-        img,
-        video {
-            max-width: 90%;
+        .nohelmet-detection {
+            color: #ff4444;
+            font-size: 20px;
+            margin: 12px;
+            font-weight: bold;
+        }
+
+        /* =========================================
+           ALERT BUTTON
+           ========================================= */
+
+        .alert-button {
+            background: #ff3030;
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 10px 0 25px;
+        }
+
+        .alert-button:hover {
+            background: #ff5555;
+        }
+
+        /* =========================================
+           RESULT IMAGE
+           ========================================= */
+
+        .result-image {
+            max-width: 100%;
             max-height: 500px;
-            margin-top: 20px;
             border-radius: 10px;
+            margin: 20px auto;
+            display: block;
         }
 
-        a {
+        /* =========================================
+           UPLOAD BUTTON
+           ========================================= */
+
+        .btn {
             display: inline-block;
             margin-top: 25px;
-            padding: 12px 25px;
-            background: #ff3333;
+            padding: 14px 28px;
+            background: #ff3030;
             color: white;
             text-decoration: none;
             border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            background: #ff5555;
         }
     </style>
+
 </head>
+
 
 <body>
 
-    <h1>🛡️ HELMGUARD</h1>
 
-    <div class="result-box">
+    <!-- =========================================
+         HEADER
+         ========================================= -->
 
-        <h2>Detection Result</h2>
+    <div class="header">
 
-        <p>File: {{ filename }}</p>
+        <h1>🛡️ HELMGUARD</h1>
 
-        {% if detections %}
+    </div>
 
-        {% for detection in detections %}
 
-        {% if detection.class == "No-Helmet" %}
+    <!-- =========================================
+         MAIN CONTAINER
+         ========================================= -->
 
-        <div class="detection nohelmet">
-            ⚠️ No-Helmet — {{ detection.confidence }}%
+    <div class="container">
+
+        <h2>
+            Detection Result
+        </h2>
+
+
+        <!-- =====================================
+             FILE NAME
+             ===================================== -->
+
+        <div class="filename">
+
+            File:
+
+            <strong>
+                {{ filename }}
+            </strong>
+
         </div>
 
-        {% elif detection.class == "Helmet" %}
 
-        <div class="detection helmet">
-            🪖 Helmet — {{ detection.confidence }}%
+        <!-- =====================================
+             NO HELMET ALERT
+             ===================================== -->
+
+        {% if nohelmet_count > 0 %}
+
+        <div class="danger-alert">
+
+            🚨 NO-HELMET VIOLATION DETECTED!
+
+            <br><br>
+
+            {{ nohelmet_count }}
+            rider(s) detected without helmet.
+
         </div>
+
+
+        <!-- =====================================
+             AUDIO
+             ===================================== -->
+
+        <audio id="alertSound">
+
+            <source src="{{ url_for('static', filename='alert.mp3') }}" type="audio/mpeg">
+
+            Your browser does not support audio.
+
+        </audio>
+
+
+        <!-- =====================================
+             PLAY ALERT BUTTON
+             ===================================== -->
+
+        <button type="button" class="alert-button" onclick="playAlert()">
+
+            🔊 Play Alert
+
+        </button>
+
 
         {% else %}
 
-        <div class="detection">
-            👤 {{ detection.class }} — {{ detection.confidence }}%
+
+        <!-- =====================================
+             NO VIOLATION
+             ===================================== -->
+
+        <div class="safe-alert">
+
+            ✅ No No-Helmet Violation Detected
+
         </div>
 
         {% endif %}
 
-        {% endfor %}
 
-        {% else %}
+        <!-- =====================================
+             DETECTIONS
+             ===================================== -->
 
-        <p>No objects detected.</p>
+        <div class="detections">
 
-        {% endif %}
+            {% if detections %}
 
+            {% for detection in detections %}
+
+            {% if detection.class|lower == "no-helmet"
+            or detection.class|lower == "no helmet" %}
+
+            <div class="nohelmet-detection">
+
+                🚨
+
+                {{ detection.class }}
+
+                —
+
+                {{ detection.confidence }}%
+
+            </div>
+
+            {% else %}
+
+            <div class="detection">
+
+                🪖
+
+                {{ detection.class }}
+
+                —
+
+                {{ detection.confidence }}%
+
+            </div>
+
+            {% endif %}
+
+            {% endfor %}
+
+            {% else %}
+
+            <div class="detection">
+
+                No detections found.
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- =====================================
+             YOLO RESULT IMAGE
+             ===================================== -->
 
         {% if result_file %}
 
-        {% if result_file.endswith('.jpg') or
-        result_file.endswith('.jpeg') or
-        result_file.endswith('.png') %}
-
-        <img src="{{ url_for('results', filename=result_file) }}">
-
-        {% elif result_file.endswith('.mp4') or
-        result_file.endswith('.avi') or
-        result_file.endswith('.webm') %}
-
-        <video controls>
-            <source src="{{ url_for('results', filename=result_file) }}">
-            Your browser does not support video playback.
-        </video>
+        <img src="{{ url_for('results', filename=result_file) }}" alt="Detection Result" class="result-image">
 
         {% endif %}
 
-        {% endif %}
 
-        <br>
+        <!-- =====================================
+             UPLOAD ANOTHER FILE
+             ===================================== -->
 
-        <a href="/upload">Upload Another File</a>
+        <a href="/upload" class="btn">
+
+            Upload Another File
+
+        </a>
 
     </div>
+
+
+    <!-- =========================================
+         JAVASCRIPT
+         ========================================= -->
+
+    <script>
+
+        function playAlert() {
+
+            const audio =
+                document.getElementById("alertSound");
+
+            if (!audio) {
+
+                alert("Alert sound was not found.");
+
+                return;
+
+            }
+
+            audio.currentTime = 0;
+
+            audio.play()
+                .then(function () {
+
+                    console.log("Alert sound playing.");
+
+                })
+                .catch(function (error) {
+
+                    console.log(
+                        "Audio playback error:",
+                        error
+                    );
+
+                    alert(
+                        "Unable to play the alert sound. " +
+                        "Please check that alert.mp3 exists inside the static folder."
+                    );
+
+                });
+
+        }
+
+    </script>
+
 
 </body>
 
