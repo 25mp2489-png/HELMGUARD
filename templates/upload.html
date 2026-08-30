@@ -19,8 +19,11 @@
     <nav>
 
         <a href="/" class="logo">
+
             <img src="{{ url_for('static', filename='images/logo.png') }}" alt="HELMGUARD Logo">
+
             <span class="logo-text">HELMGUARD</span>
+
         </a>
 
         <ul>
@@ -52,26 +55,32 @@
         <h1>Upload Traffic Image or Video</h1>
 
         <p>
-            Upload an image or video to detect helmet and
-            no-helmet riders.
+            Upload an image or short video to detect
+            helmet and no-helmet riders.
         </p>
 
 
         <form action="/upload" method="POST" enctype="multipart/form-data">
 
             <!-- File selection -->
+
             <label for="image" class="file-label">
                 📁 Choose Image or Video
             </label>
 
-            <input type="file" id="image" name="image" accept="image/*,video/*" required>
+            <input type="file" id="image" name="image" accept="image/*,video/mp4,video/avi,video/mov,video/mkv"
+                required>
+
 
             <!-- Selected file name -->
+
             <p id="file-name">
                 No image or video selected
             </p>
 
+
             <!-- Submit -->
+
             <button type="submit" class="btn">
                 🔍 Detect Helmet
             </button>
@@ -82,6 +91,7 @@
 
 
     <!-- Footer -->
+
     <footer>
 
         <p>
@@ -91,20 +101,29 @@
     </footer>
 
 
-    <!-- Display selected file name -->
+    <!-- Display selected file -->
+
     <script>
 
-        const imageInput = document.getElementById("image");
-        const fileName = document.getElementById("file-name");
+        const imageInput =
+            document.getElementById("image");
+
+        const fileName =
+            document.getElementById("file-name");
+
 
         imageInput.addEventListener("change", function () {
 
             if (this.files.length > 0) {
 
-                fileName.textContent =
-                    "Selected: " + this.files[0].name;
+                const file = this.files[0];
 
-            } else {
+                fileName.textContent =
+                    "Selected: " + file.name;
+
+            }
+
+            else {
 
                 fileName.textContent =
                     "No image or video selected";

@@ -187,7 +187,7 @@ def home():
 
 
 # =========================================================
-# UPLOAD + YOLO DETECTION
+# UPLOAD + IMAGE / VIDEO DETECTION
 # =========================================================
 
 @app.route("/upload", methods=["GET", "POST"])
@@ -210,10 +210,26 @@ def upload():
             return "No file was selected."
 
         # -------------------------------------------------
-        # Filename
+        # Get filename
         # -------------------------------------------------
 
         filename = os.path.basename(file.filename)
+
+        # -------------------------------------------------
+        # Detect file type
+        # -------------------------------------------------
+
+        extension = os.path.splitext(filename)[1].lower()
+
+        video_extensions = [
+            ".mp4",
+            ".avi",
+            ".mov",
+            ".mkv",
+            ".webm"
+        ]
+
+        is_video = extension in video_extensions
 
         # -------------------------------------------------
         # Save uploaded file
@@ -239,209 +255,485 @@ def upload():
             )
         )
 
-        # -------------------------------------------------
-        # YOLO detection
-        # -------------------------------------------------
+        print("Processing...")
 
-        results = model.predict(
+        # =================================================
+        # IMAGE DETECTION
+        # =================================================
 
-            source=filepath,
+        if not is_video:
 
-            conf=0.1,
+            results = model.predict(
 
-            save=True,
+                source=filepath,
 
-            project="runs",
+                conf=0.1,
 
-            name=run_name,
+                save=True,
 
-            exist_ok=True
+                project="runs",
 
-        )
+                name=run_name,
 
-        # -------------------------------------------------
-        # YOLO output directory
-        # -------------------------------------------------
+                exist_ok=True
 
-        output_dir = str(results[0].save_dir)
+            )
 
-        print("YOLO output directory:")
-        print(output_dir)
+            output_dir = str(results[0].save_dir)
 
-        # -------------------------------------------------
-        # Find result file
-        # -------------------------------------------------
+            print("YOLO output directory:")
+            print(output_dir)
 
-        output_file = None
+            # -------------------------------------------------
+            # Find result image
+            # -------------------------------------------------
 
-        original_name = os.path.splitext(
-            filename
-        )[0].lower()
+            output_file = None
 
-        for file_name in os.listdir(output_dir):
-
-            file_name_without_ext = os.path.splitext(
-                file_name
+            original_name = os.path.splitext(
+                filename
             )[0].lower()
 
-            if file_name_without_ext == original_name:
+            for file_name in os.listdir(output_dir):
 
-                output_file = file_name
+                file_name_without_ext = os.path.splitext(
+                    file_name
+                )[0].lower()
 
-                break
+                if file_name_without_ext == original_name:
 
-        # Fallback
-        if output_file is None:
+                    output_file = file_name
 
-            files = os.listdir(output_dir)
+                    break
 
-            if files:
+            # -------------------------------------------------
+            # Fallback
+            # -------------------------------------------------
 
-                output_file = files[0]
+            if output_file is None:
 
-        print("Output file:", output_file)
+                files = os.listdir(output_dir)
 
-        # =================================================
-        # CURRENT DATE & TIME
-        # =================================================
+                if files:
 
-        now = datetime.now()
+                    output_file = files[0]
 
-        current_date = now.strftime("%Y-%m-%d")
-        current_time = now.strftime("%H:%M:%S")
+            print("Output file:", output_file)
 
-        # =================================================
-        # GET DETECTIONS
-        # =================================================
+            # =================================================
+            # CURRENT DATE & TIME
+            # =================================================
 
-        detections = []
+            now = datetime.now()
 
-        for result in results:
+            current_date = now.strftime("%Y-%m-%d")
+            current_time = now.strftime("%H:%M:%S")
 
-            if result.boxes is not None:
+            # =================================================
+            # GET DETECTIONS
+            # =================================================
 
-                for box in result.boxes:
+            detections = []
 
-                    class_id = int(box.cls[0])
+            for result in results:
 
-                    confidence = float(box.conf[0])
+                if result.boxes is not None:
 
-                    class_name = model.names[class_id]
+                    for box in result.boxes:
 
-                    confidence_percent = round(
-                        confidence * 100,
-                        2
-                    )
+                        class_id = int(box.cls[0])
 
-                    detections.append({
+                        confidence = float(box.conf[0])
 
-                        "class": class_name,
+                        class_name = model.names[class_id]
 
-                        "confidence":
-                            confidence_percent
+                        confidence_percent = round(
+                            confidence * 100,
+                            2
+                        )
 
-                    })
+                        detections.append({
 
-                    # =====================================
-                    # SAVE EVERY DETECTION
-                    # =====================================
+                            "class": class_name,
 
-                    save_detection(
+                            "confidence":
+                                confidence_percent
 
-                        image=output_file,
+                        })
 
-                        date=current_date,
+                        # -------------------------------------
+                        # SAVE DETECTION
+                        # -------------------------------------
 
-                        time=current_time,
+                        save_detection(
 
-                        location=DEFAULT_LOCATION,
+                            image=output_file,
 
-                        detection_type=class_name,
+                            date=current_date,
 
-                        confidence=confidence_percent
+                            time=current_time,
 
-                    )
+                            location=DEFAULT_LOCATION,
 
-        # =================================================
-        # COUNT DETECTIONS
-        # =================================================
+                            detection_type=class_name,
 
-        helmet_count = 0
-        nohelmet_count = 0
+                            confidence=confidence_percent
 
-        for detection in detections:
+                        )
 
-            class_name = detection["class"].lower()
+            # =================================================
+            # COUNT DETECTIONS
+            # =================================================
 
-            if class_name == "helmet":
-
-                helmet_count += 1
-
-            elif class_name in [
-                "no-helmet",
-                "no helmet"
-            ]:
-
-                nohelmet_count += 1
-
-        print(
-            "Helmet count:",
-            helmet_count
-        )
-
-        print(
-            "No-Helmet count:",
-            nohelmet_count
-        )
-
-        # =================================================
-        # SAVE NO-HELMET VIOLATION
-        # =================================================
-
-        if nohelmet_count > 0:
+            helmet_count = 0
+            nohelmet_count = 0
 
             for detection in detections:
 
-                if detection["class"].lower() in [
+                class_name = detection["class"].lower()
+
+                if class_name == "helmet":
+
+                    helmet_count += 1
+
+                elif class_name in [
                     "no-helmet",
                     "no helmet"
                 ]:
 
-                    save_violation(
+                    nohelmet_count += 1
 
-                        image=output_file,
+            print(
+                "Helmet count:",
+                helmet_count
+            )
 
-                        date=current_date,
+            print(
+                "No-Helmet count:",
+                nohelmet_count
+            )
 
-                        time=current_time,
+            # =================================================
+            # SAVE NO-HELMET VIOLATION
+            # =================================================
 
-                        location=DEFAULT_LOCATION,
+            if nohelmet_count > 0:
 
-                        detection_type="No-Helmet",
+                for detection in detections:
 
-                        confidence=detection["confidence"]
+                    if detection["class"].lower() in [
+                        "no-helmet",
+                        "no helmet"
+                    ]:
 
-                    )
+                        save_violation(
+
+                            image=output_file,
+
+                            date=current_date,
+
+                            time=current_time,
+
+                            location=DEFAULT_LOCATION,
+
+                            detection_type="No-Helmet",
+
+                            confidence=detection["confidence"]
+
+                        )
+
+            # =================================================
+            # IMAGE RESULT PAGE
+            # =================================================
+
+            return render_template(
+
+                "result.html",
+
+                filename=filename,
+
+                detections=detections,
+
+                helmet_count=helmet_count,
+
+                nohelmet_count=nohelmet_count,
+
+                result_file=output_file,
+
+                is_video=False
+
+            )
 
         # =================================================
-        # RESULT PAGE
+        # VIDEO DETECTION
         # =================================================
 
-        return render_template(
+        else:
 
-            "result.html",
+            print("Video detected.")
+            print("Starting YOLO video processing...")
 
-            filename=filename,
+            results = model.predict(
 
-            detections=detections,
+                source=filepath,
 
-            helmet_count=helmet_count,
+                conf=0.1,
 
-            nohelmet_count=nohelmet_count,
+                save=True,
 
-            result_file=output_file
+                project="runs",
 
-        )
+                name=run_name,
+
+                exist_ok=True,
+
+                stream=True
+
+            )
+
+            detections = []
+
+            helmet_detected = False
+            nohelmet_detected = False
+
+            max_helmet_confidence = 0
+            max_nohelmet_confidence = 0
+
+            frame_count = 0
+
+            output_dir = None
+
+            # -------------------------------------------------
+            # Process video frames
+            # -------------------------------------------------
+
+            for result in results:
+
+                frame_count += 1
+
+                output_dir = str(result.save_dir)
+
+                if result.boxes is not None:
+
+                    for box in result.boxes:
+
+                        class_id = int(box.cls[0])
+
+                        confidence = float(box.conf[0])
+
+                        class_name = model.names[class_id]
+
+                        confidence_percent = round(
+                            confidence * 100,
+                            2
+                        )
+
+                        class_lower = class_name.lower()
+
+                        # -------------------------------------
+                        # Helmet
+                        # -------------------------------------
+
+                        if class_lower == "helmet":
+
+                            helmet_detected = True
+
+                            if confidence_percent > max_helmet_confidence:
+
+                                max_helmet_confidence = (
+                                    confidence_percent
+                                )
+
+                        # -------------------------------------
+                        # No Helmet
+                        # -------------------------------------
+
+                        elif class_lower in [
+                            "no-helmet",
+                            "no helmet"
+                        ]:
+
+                            nohelmet_detected = True
+
+                            if confidence_percent > max_nohelmet_confidence:
+
+                                max_nohelmet_confidence = (
+                                    confidence_percent
+                                )
+
+            print(
+                "Total video frames processed:",
+                frame_count
+            )
+
+            print(
+                "Helmet detected:",
+                helmet_detected
+            )
+
+            print(
+                "No-Helmet detected:",
+                nohelmet_detected
+            )
+
+            # =================================================
+            # FIND OUTPUT VIDEO
+            # =================================================
+
+            output_file = None
+
+            if output_dir and os.path.exists(output_dir):
+
+                original_name = os.path.splitext(
+                    filename
+                )[0].lower()
+
+                for file_name in os.listdir(output_dir):
+
+                    file_name_without_ext = os.path.splitext(
+                        file_name
+                    )[0].lower()
+
+                    if file_name_without_ext == original_name:
+
+                        output_file = file_name
+
+                        break
+
+                # -------------------------------------------------
+                # Fallback: find video file
+                # -------------------------------------------------
+
+                if output_file is None:
+
+                    for file_name in os.listdir(output_dir):
+
+                        if os.path.splitext(
+                            file_name
+                        )[1].lower() in video_extensions:
+
+                            output_file = file_name
+
+                            break
+
+            print("Output video:", output_file)
+
+            # =================================================
+            # CURRENT DATE & TIME
+            # =================================================
+
+            now = datetime.now()
+
+            current_date = now.strftime("%Y-%m-%d")
+            current_time = now.strftime("%H:%M:%S")
+
+            # =================================================
+            # CREATE SUMMARY DETECTIONS
+            # =================================================
+
+            if helmet_detected:
+
+                detections.append({
+
+                    "class": "Helmet",
+
+                    "confidence":
+                        max_helmet_confidence
+
+                })
+
+                save_detection(
+
+                    image=output_file or filename,
+
+                    date=current_date,
+
+                    time=current_time,
+
+                    location=DEFAULT_LOCATION,
+
+                    detection_type="Helmet",
+
+                    confidence=max_helmet_confidence
+
+                )
+
+            if nohelmet_detected:
+
+                detections.append({
+
+                    "class": "No-Helmet",
+
+                    "confidence":
+                        max_nohelmet_confidence
+
+                })
+
+                save_detection(
+
+                    image=output_file or filename,
+
+                    date=current_date,
+
+                    time=current_time,
+
+                    location=DEFAULT_LOCATION,
+
+                    detection_type="No-Helmet",
+
+                    confidence=max_nohelmet_confidence
+
+                )
+
+                # ---------------------------------------------
+                # Save ONE violation for this video
+                # ---------------------------------------------
+
+                save_violation(
+
+                    image=output_file or filename,
+
+                    date=current_date,
+
+                    time=current_time,
+
+                    location=DEFAULT_LOCATION,
+
+                    detection_type="No-Helmet",
+
+                    confidence=max_nohelmet_confidence
+
+                )
+
+            # =================================================
+            # COUNTS
+            # =================================================
+
+            helmet_count = 1 if helmet_detected else 0
+
+            nohelmet_count = 1 if nohelmet_detected else 0
+
+            # =================================================
+            # VIDEO RESULT PAGE
+            # =================================================
+
+            return render_template(
+
+                "result.html",
+
+                filename=filename,
+
+                detections=detections,
+
+                helmet_count=helmet_count,
+
+                nohelmet_count=nohelmet_count,
+
+                result_file=output_file,
+
+                is_video=True
+
+            )
 
     return render_template("upload.html")
 

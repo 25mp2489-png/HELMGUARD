@@ -77,11 +77,27 @@
             color: #d1d5db;
         }
 
+        /* =========================
+           IMAGE
+        ========================== */
+
         .violation-image {
             width: 120px;
             height: 80px;
             object-fit: cover;
             border-radius: 8px;
+        }
+
+        /* =========================
+           VIDEO
+        ========================== */
+
+        .violation-video {
+            width: 160px;
+            height: 90px;
+            object-fit: cover;
+            border-radius: 8px;
+            background: #000;
         }
     </style>
 
@@ -89,6 +105,7 @@
 
 
 <body>
+
 
     <!-- =========================
          NAVIGATION
@@ -157,7 +174,7 @@
 
                         <th>ID</th>
 
-                        <th>Image</th>
+                        <th>Evidence</th>
 
                         <th>Date</th>
 
@@ -180,43 +197,95 @@
 
                     <tr>
 
+                        <!-- ID -->
+
                         <td>
                             {{ violation["id"] }}
                         </td>
 
 
+                        <!-- =========================
+                             EVIDENCE
+                        ========================== -->
+
                         <td>
 
+                            {% set filename =
+                            violation["image"]|lower
+                            %}
+
+
+                            <!-- VIDEO -->
+
+                            {% if filename.endswith(".mp4")
+                            or filename.endswith(".avi")
+                            or filename.endswith(".mov")
+                            or filename.endswith(".mkv")
+                            or filename.endswith(".webm") %}
+
+                            <video class="violation-video" controls muted>
+
+                                <source src="{{ url_for(
+                                            'results',
+                                            filename=violation['image']
+                                        ) }}">
+
+                                Your browser does not support
+                                video playback.
+
+                            </video>
+
+                            {% else %}
+
+                            <!-- IMAGE -->
+
                             <img src="{{ url_for(
-                                    'results',
-                                    filename=violation['image']
-                                ) }}" class="violation-image" alt="Violation Image">
+                                        'results',
+                                        filename=violation['image']
+                                    ) }}" class="violation-image" alt="Violation Image">
+
+                            {% endif %}
 
                         </td>
 
+
+                        <!-- DATE -->
 
                         <td>
                             {{ violation["date"] }}
                         </td>
 
 
+                        <!-- TIME -->
+
                         <td>
                             {{ violation["time"] }}
                         </td>
 
+
+                        <!-- LOCATION -->
 
                         <td>
                             {{ violation["location"] }}
                         </td>
 
 
+                        <!-- DETECTION -->
+
                         <td class="violation">
+
+                            🚨
                             {{ violation["detection_type"] }}
+
                         </td>
 
 
+                        <!-- CONFIDENCE -->
+
                         <td class="confidence">
+
                             {{ violation["confidence"] }}%
+
                         </td>
 
                     </tr>
@@ -236,7 +305,8 @@
                 </h2>
 
                 <p>
-                    Upload a traffic image to start recording violations.
+                    Upload a traffic image or video
+                    to start recording violations.
                 </p>
 
             </div>
@@ -259,6 +329,7 @@
         </p>
 
     </footer>
+
 
 </body>
 
