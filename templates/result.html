@@ -17,35 +17,42 @@
             font-family: Arial, Helvetica, sans-serif;
         }
 
+
         body {
             background: #111111;
             color: white;
             min-height: 100vh;
         }
 
+
         .header {
             text-align: center;
-            padding: 70px 20px 25px;
+            padding: 60px 20px 25px;
         }
+
 
         .header h1 {
             color: #ff3030;
             font-size: 34px;
         }
 
+
         .container {
-            width: 750px;
-            max-width: 90%;
+            width: 900px;
+            max-width: 94%;
             margin: auto;
             background: #222222;
             padding: 40px;
             border-radius: 15px;
             text-align: center;
+            margin-bottom: 50px;
         }
+
 
         .container h2 {
             margin-bottom: 20px;
         }
+
 
         .filename {
             margin-bottom: 25px;
@@ -68,6 +75,7 @@
             box-shadow: 0 0 20px rgba(255, 48, 48, 0.6);
             animation: blink 1s infinite;
         }
+
 
         @keyframes blink {
 
@@ -109,11 +117,13 @@
             margin-bottom: 30px;
         }
 
+
         .detection {
             color: #00ff88;
             font-size: 20px;
             margin: 12px;
         }
+
 
         .nohelmet-detection {
             color: #ff4444;
@@ -138,6 +148,7 @@
             cursor: pointer;
             margin: 10px 0 25px;
         }
+
 
         .alert-button:hover {
             background: #ff5555;
@@ -184,6 +195,200 @@
 
 
         /* =========================================
+           INFORMATION GRID
+           ========================================= */
+
+        .info-section {
+            margin-top: 30px;
+            text-align: left;
+        }
+
+
+        .section-title {
+            color: #ff3030;
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #444;
+        }
+
+
+        .info-card {
+            background: #181818;
+            border: 1px solid #3a3a3a;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 18px;
+        }
+
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 9px 0;
+            border-bottom: 1px solid #303030;
+        }
+
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+
+        .info-label {
+            color: #aaa;
+        }
+
+
+        .info-value {
+            color: white;
+            font-weight: bold;
+            text-align: right;
+            word-break: break-word;
+        }
+
+
+        /* =========================================
+           PLATE STATUS
+           ========================================= */
+
+        .success {
+            color: #00ff88;
+        }
+
+
+        .warning {
+            color: #ffc107;
+        }
+
+
+        .danger {
+            color: #ff4444;
+        }
+
+
+        /* =========================================
+           PLATE IMAGE
+           ========================================= */
+
+        .plate-image {
+            max-width: 320px;
+            width: 100%;
+            border-radius: 8px;
+            margin: 15px auto;
+            display: block;
+            border: 2px solid #444;
+        }
+
+
+        /* =========================================
+           NOTIFICATION CARDS
+           ========================================= */
+
+        .notification-box {
+            background: #181818;
+            border-radius: 10px;
+            padding: 18px;
+            margin-bottom: 12px;
+            border-left: 4px solid #00ff88;
+        }
+
+
+        .notification-box.pending {
+            border-left-color: #ffc107;
+        }
+
+
+        .notification-title {
+            font-weight: bold;
+            font-size: 17px;
+            margin-bottom: 7px;
+        }
+
+
+        .notification-status {
+            color: #00ff88;
+            font-weight: bold;
+        }
+
+
+        /* =========================================
+           NOTICE
+           ========================================= */
+
+        .notice-card {
+            background: #181818;
+            border: 1px solid #ff3030;
+            border-radius: 12px;
+            padding: 22px;
+            margin-top: 10px;
+        }
+
+
+        .notice-id {
+            font-size: 18px;
+            font-weight: bold;
+            color: #ff5555;
+            margin-bottom: 10px;
+        }
+
+
+        .notice-status {
+            color: #00ff88;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+
+        .notice-button {
+            display: inline-block;
+            background: #ff3030;
+            color: white;
+            text-decoration: none;
+            padding: 12px 22px;
+            border-radius: 8px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+
+        .notice-button:hover {
+            background: #ff5555;
+        }
+
+
+        /* =========================================
+           NO OWNER
+           ========================================= */
+
+        .no-owner {
+            background: #2a2020;
+            border-left: 4px solid #ffc107;
+            padding: 16px;
+            border-radius: 8px;
+            color: #ddd;
+            line-height: 1.6;
+        }
+
+
+        /* =========================================
+           DEMO NOTICE
+           ========================================= */
+
+        .demo-note {
+            background: #191919;
+            color: #999;
+            padding: 14px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+
+        /* =========================================
            UPLOAD BUTTON
            ========================================= */
 
@@ -198,8 +403,38 @@
             font-weight: bold;
         }
 
+
         .btn:hover {
             background: #ff5555;
+        }
+
+
+        /* =========================================
+           RESPONSIVE
+           ========================================= */
+
+        @media (max-width: 650px) {
+
+            .container {
+                padding: 25px 18px;
+            }
+
+
+            .header h1 {
+                font-size: 28px;
+            }
+
+
+            .info-row {
+                flex-direction: column;
+                gap: 4px;
+            }
+
+
+            .info-value {
+                text-align: left;
+            }
+
         }
     </style>
 
@@ -256,7 +491,8 @@
 
             🚨 NO-HELMET VIOLATION DETECTED!
 
-            <br><br>
+            <br>
+            <br>
 
             {{ nohelmet_count }}
             rider(s) detected without helmet.
@@ -372,17 +608,19 @@
 
         <p class="video-info">
 
-            🎥 Processed Video
+            🎥 Processed Video — Browser Compatible MP4
 
         </p>
 
-        <video class="result-video" controls autoplay muted>
+
+        <video class="result-video" controls playsinline preload="metadata">
 
             <source src="{{ url_for('results', filename=result_file) }}" type="video/mp4">
 
-            Your browser does not support video playback.
+            Your browser does not support HTML5 video playback.
 
         </video>
+
 
         {% else %}
 
@@ -391,6 +629,479 @@
         <img src="{{ url_for('results', filename=result_file) }}" alt="Detection Result" class="result-image">
 
         {% endif %}
+
+        {% endif %}
+
+
+        <!-- =========================================
+             NUMBER PLATE DETECTION
+             ========================================= -->
+
+        {% if plate_info %}
+
+        <div class="info-section">
+
+            <div class="section-title">
+
+                🔢 NUMBER PLATE DETECTION
+
+            </div>
+
+
+            <div class="info-card">
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Detection Status
+                    </span>
+
+
+                    {% if plate_info.detected %}
+
+                    <span class="info-value success">
+
+                        ✓ Plate Detected
+
+                    </span>
+
+                    {% else %}
+
+                    <span class="info-value danger">
+
+                        ✗ Plate Not Detected
+
+                    </span>
+
+                    {% endif %}
+
+                </div>
+
+
+                {% if plate_info.detected %}
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Plate Confidence
+                    </span>
+
+                    <span class="info-value">
+
+                        {{ plate_info.confidence }}%
+
+                    </span>
+
+                </div>
+
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        OCR Result
+                    </span>
+
+
+                    {% if plate_info.ocr_text %}
+
+                    <span class="info-value">
+
+                        {{ plate_info.ocr_text }}
+
+                    </span>
+
+                    {% else %}
+
+                    <span class="info-value warning">
+
+                        OCR could not read plate
+
+                    </span>
+
+                    {% endif %}
+
+                </div>
+
+
+                {% if plate_info.normalized_text %}
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Normalized OCR
+                    </span>
+
+                    <span class="info-value">
+
+                        {{ plate_info.normalized_text }}
+
+                    </span>
+
+                </div>
+
+                {% endif %}
+
+
+                {% if plate_info.plate_image %}
+
+                <img src="{{ url_for(
+                        'plate_evidence',
+                        filename=plate_info.plate_image
+                    ) }}" alt="Detected Number Plate" class="plate-image">
+
+                {% endif %}
+
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- =========================================
+             VEHICLE OWNER
+             ========================================= -->
+
+        {% if nohelmet_count > 0 %}
+
+        <div class="info-section">
+
+            <div class="section-title">
+
+                👤 VEHICLE OWNER
+
+            </div>
+
+
+            {% if owner_info %}
+
+            <div class="info-card">
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Owner Name
+                    </span>
+
+                    <span class="info-value">
+
+                        {{ owner_info.owner_name }}
+
+                    </span>
+
+                </div>
+
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Vehicle Number
+                    </span>
+
+                    <span class="info-value">
+
+                        {{ owner_info.plate_number }}
+
+                    </span>
+
+                </div>
+
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Vehicle Type
+                    </span>
+
+                    <span class="info-value">
+
+                        {{ owner_info.vehicle_type }}
+
+                    </span>
+
+                </div>
+
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Phone
+                    </span>
+
+                    <span class="info-value">
+
+                        {{ owner_info.phone }}
+
+                    </span>
+
+                </div>
+
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Address
+                    </span>
+
+                    <span class="info-value">
+
+                        {{ owner_info.address }}
+
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            {% else %}
+
+            <div class="no-owner">
+
+                ⚠️
+
+                <strong>
+                    Owner not matched
+                </strong>
+
+                <br>
+                <br>
+
+                The detected OCR text could not be
+                matched with the demonstration
+                vehicle-owner database.
+
+                <br>
+                <br>
+
+                No owner identity has been assumed.
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- =========================================
+             NOTIFICATIONS
+             ========================================= -->
+
+        {% if notice_info %}
+
+        <div class="info-section">
+
+            <div class="section-title">
+
+                📩 NOTIFICATIONS
+
+            </div>
+
+
+            <div class="notification-box">
+
+                <div class="notification-title">
+
+                    👤 Vehicle Owner
+
+                </div>
+
+                <div class="notification-status">
+
+                    ✓ Notification Recorded
+
+                </div>
+
+            </div>
+
+
+            <div class="notification-box">
+
+                <div class="notification-title">
+
+                    👨‍💼 Administrator
+
+                </div>
+
+                <div class="notification-status">
+
+                    ✓ Notification Recorded
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        {% elif nohelmet_count > 0 %}
+
+
+        <div class="info-section">
+
+            <div class="section-title">
+
+                📩 NOTIFICATIONS
+
+            </div>
+
+
+            <div class="notification-box pending">
+
+                <div class="notification-title">
+
+                    Notification Status
+
+                </div>
+
+                <div class="warning">
+
+                    Owner could not be identified from
+                    the OCR result, so an owner-specific
+                    notification was not generated.
+
+                </div>
+
+                <br>
+
+                <div>
+
+                    ✓ Violation recorded for administrator
+                    review.
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- =========================================
+             PENALTY NOTICE
+             ========================================= -->
+
+        {% if notice_info %}
+
+        <div class="info-section">
+
+            <div class="section-title">
+
+                📄 PENALTY NOTICE
+
+            </div>
+
+
+            <div class="notice-card">
+
+                <div class="notice-id">
+
+                    Notice ID:
+
+                    {{ notice_info.notice_id }}
+
+                </div>
+
+
+                <div class="notice-status">
+
+                    ✓ {{ notice_info.notice_status }}
+
+                </div>
+
+
+                <div class="info-row">
+
+                    <span class="info-label">
+
+                        Notice Generated
+
+                    </span>
+
+                    <span class="info-value">
+
+                        {{ notice_info.notice_time }}
+
+                    </span>
+
+                </div>
+
+
+                <div class="info-row">
+
+                    <span class="info-label">
+
+                        Owner Notification
+
+                    </span>
+
+                    <span class="info-value success">
+
+                        ✓ Recorded
+
+                    </span>
+
+                </div>
+
+
+                <div class="info-row">
+
+                    <span class="info-label">
+
+                        Admin Notification
+
+                    </span>
+
+                    <span class="info-value success">
+
+                        ✓ Recorded
+
+                    </span>
+
+                </div>
+
+
+                <a href="{{ url_for(
+                        'notice',
+                        filename=notice_info.notice_file
+                    ) }}" target="_blank" class="notice-button">
+
+                    📄 View Penalty Notice
+
+                </a>
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- =========================================
+             DEMO INFORMATION
+             ========================================= -->
+
+        {% if owner_info or notice_info %}
+
+        <div class="demo-note">
+
+            <strong>Project Demonstration:</strong>
+
+            Vehicle-owner details and notifications
+            shown here are based on the HELMGUARD
+            demonstration database.
+
+            The generated penalty notice is an
+            academic project demonstration and is
+            not an official RTO or government notice.
+
+        </div>
 
         {% endif %}
 
@@ -405,6 +1116,7 @@
 
         </a>
 
+
     </div>
 
 
@@ -417,17 +1129,24 @@
         function playAlert() {
 
             const audio =
-                document.getElementById("alertSound");
+                document.getElementById(
+                    "alertSound"
+                );
+
 
             if (!audio) {
 
-                alert("Alert sound was not found.");
+                alert(
+                    "Alert sound was not found."
+                );
 
                 return;
 
             }
 
+
             audio.currentTime = 0;
+
 
             audio.play()
 
@@ -448,7 +1167,8 @@
 
                     alert(
                         "Unable to play the alert sound. " +
-                        "Please check that alert.mp3 exists inside the static folder."
+                        "Please check that alert.mp3 exists " +
+                        "inside the static folder."
                     );
 
                 });
